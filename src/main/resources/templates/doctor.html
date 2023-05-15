@@ -6,7 +6,6 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
 
   <title>Doctor</title>
@@ -21,12 +20,17 @@
         <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
               class="icon-bar"></span> <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#" th:href="@{/}">Registration and
-        Login Module</a>
+      <a class="navbar-brand"  th:href="@{/index}">Home</a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
         <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+        <li sec:authorize="isAuthenticated()" ><a th:href="@{/doctor}">For Doctors</a></li>
+        <li sec:authorize="isAuthenticated()"  ><a th:href="@{/pharmacist}">For pharmacist</a></li>
+        <li sec:authorize="isAuthenticated()" ><a th:href="@{/patient}">For patients</a></li>
+
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/doctor/create-prescription}">Add a Prescription to a patient</a></li>
+
       </ul>
     </div>
   </div>
@@ -36,11 +40,71 @@
 <br>
 <div class="container">
   <h1>Doctor</h1>
-
   <p>
     Welcome <span sec:authentication="principal.username">Doctor</span>
   </p>
+  <h2>Data of all users</h2>
+  <table class="table">
+    <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Identification Number</th>
+      <th>Email</th>
+      <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td th:text="${user.id}"></td>
+      <td th:text="${user.firstName}"></td>
+      <td th:text="${user.lastName}"></td>
+      <td th:text="${user.identificationNumber}"></td>
+      <td th:text="${user.email}"></td>
+      <td sec:authorize="isAuthenticated()">
+        <form th:action="@{/doctor/delete/user/{id}(id=${user.id})}" method="post">
+          <input type="submit" value="Delete" />
+
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
 </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <br>
+      <br>
+     <label><h4 style="text-align: center; text-shadow: 1px 1px 1px blue, 2px 2px 1px blue;">
+       Add a Drug in prescription to a patient with his Identification Number</h4>
+     </label>
+<form sec:authorize="isAuthenticated()" th:action="@{/doctor}" th:object="${prescriptionDto}" method="post">
+
+  <div class="form-group">
+    <label>Date:</label>
+    <input type="date" class="form-control" th:field="*{date}" required><br>
+  </div>
+  <div class="form-group">
+    <label>Drug Name:</label>
+    <input type="text" class="form-control" th:field="*{drugName}" required><br>
+  </div>
+  <div class="form-group">
+    <label>Identification Number:</label>
+    <input type="text" th:field="*{identificationNumber}" required class="form-control"><br>
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">Create Prescription</button>
+  </div>
+</form>
+
+    </div>
+  </div>
+</div>
+
 
 <script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>

@@ -3,11 +3,13 @@ package com.medical.healthcare.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping()
 public class MainController {
     
-    @GetMapping("/")
+    @GetMapping("/index")
     public String root(){
         return "index";
     }
@@ -22,20 +24,17 @@ public class MainController {
 //        return "user/index";
 //    }
 
-    @GetMapping("/patient")
-    public String patient(){
-        return "patient";
-    }
+//    @GetMapping("/patient")
+//    public String patient(){
+//        return "patient";
+//    }
 
-    @GetMapping("/doctor")
-    public String doctor(){
-        return "doctor";
-    }
+//    @GetMapping("/doctor")
+//    public String doctor(){
+//        return "doctor";
+//    }
 
-    @GetMapping("/pharmacist")
-    public String pharmacist(){
-        return "pharmacist";
-    }
+
 
 
 }

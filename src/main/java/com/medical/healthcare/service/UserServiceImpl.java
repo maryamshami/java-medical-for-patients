@@ -2,6 +2,7 @@ package com.medical.healthcare.service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.medical.healthcare.controller.dto.UserRegistrationDto;
@@ -82,5 +83,15 @@ public class UserServiceImpl implements UserService {
                     .map(role -> new SimpleGrantedAuthority(role.getName()))
                     .collect(Collectors.toList());
             }
-    
+            @Override
+            public List<User> getAllUsers(){
+                return userRepository.findAll();
+            };
+
+    @Override
+    public void deleteById(long id){
+        userRepository.deleteById(id);
+    }
+
+
 }

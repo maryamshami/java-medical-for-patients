@@ -13,13 +13,6 @@ public class Pharmacy {
     private String Address;
     private String phone;
 
-
-//    // One prescription can have many drugs
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "prescription_id")
-//    ArrayList<Drug> drugs;
-
-
     public Pharmacy() {
     }
 

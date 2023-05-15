@@ -41,7 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 "/css/**",
                 "/img/**",
                 "/webjars/**",
-                "/h2/**").permitAll()
+                "/h2/**","/index/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin()
@@ -78,6 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                         return;
                     }else if (authority.getAuthority().equals("ROLE_PHARMACIST")) {
                         response.sendRedirect("/pharmacist");
+                        return;
                     }
                 }
                 // If no role is found, redirect to index

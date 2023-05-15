@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <head>
     <meta charset="utf-8" />
@@ -13,19 +14,29 @@
 
 <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
                     aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
-                        class="icon-bar"></span> <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#" th:href="@{/}">Registration and
-                    Login Module</a>
-            </div>
+                <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand"  th:href="@{/index}">Home</a>
         </div>
-    </nav>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+                <li sec:authorize="isAuthenticated()" ><a th:href="@{/doctor}">For Doctors</a></li>
+                <li sec:authorize="isAuthenticated()"  ><a th:href="@{/pharmacist}">For pharmacist</a></li>
+                <li sec:authorize="isAuthenticated()" ><a th:href="@{/patient}">For patients</a></li>
+
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/doctor/create-prescription}">Add a Prescription to a patient</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
 
     <br>
     <br>
