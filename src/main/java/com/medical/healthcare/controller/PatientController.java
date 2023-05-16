@@ -1,14 +1,19 @@
 package com.medical.healthcare.controller;
 
+import com.medical.healthcare.model.Prescription;
 import com.medical.healthcare.model.User;
 import com.medical.healthcare.service.DrugService;
 import com.medical.healthcare.service.PrescriptionService;
 import com.medical.healthcare.service.UserService;
+import org.springframework.http.HttpRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,23 +32,21 @@ public class PatientController {
 
     @GetMapping("/patient")
     public String patient(Model model){
-        List<User> userList = userService.getAllUsers();
-        model.addAttribute("users", userList);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        List<Prescription> prescriptionList = prescriptionService.getAllPrescriptions();
+        List<Prescription> prescriptionList1=new ArrayList<>();
+        for (Prescription p: prescriptionList ) {
+            if(p.getUser().getIdentificationNumber().equals(authentication.getName())){
+                prescriptionList1.add(p);
+            }
+        }
+        model.addAttribute("prescriptions", prescriptionList1);
+
+        User user=userService.findByIdentificationNumber(authentication.getName());
+        model.addAttribute("user",user);
         return "patient";
     }
 
 
-//    @GetMapping("/get")
-//    public String showCreateForm(Model model) {
-////        model.addAttribute("prescription", new Prescription());
-//        model.addAttribute("drugs", drugService.getAllDrugs());
-//        model.addAttribute("users", userService.getAllUsers());
-//        return "patient";
-//    }
-//
-//    @PostMapping("/prescriptions")
-//    public String createPrescription(@ModelAttribute Prescription prescription) {
-//        prescriptionService.savePrescription(prescription);
-//        return "redirect:/doctor/new";
-//    }
 }

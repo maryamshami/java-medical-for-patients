@@ -41,8 +41,8 @@
 <br>
 <div class="container">
   <h1>Patient</h1>
-    <table>
-      <thead>
+  <table class="table">
+    <thead class="thead-dark">
       <tr>
         <th>ID</th>
         <th>First Name</th>
@@ -52,7 +52,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="user : ${users}">
+      <tr >
         <td th:text="${user.id}"></td>
         <td th:text="${user.firstName}"></td>
         <td th:text="${user.lastName}"></td>
@@ -61,6 +61,35 @@
       </tr>
       </tbody>
     </table>
+
+  <br>
+  <br>
+
+  <h2>Your All Prescriptions </h2>
+  <table class="table">
+    <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>Date</th>
+      <th>Drug Name</th>
+      <th>User Name</th>
+      <th>Actions</th> <!-- New column for actions -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="prescription : ${prescriptions}">
+      <td th:text="${prescription.id}"></td>
+      <td th:text="${prescription.date}"></td>
+      <td th:text="${prescription.drug.name}"></td>
+      <td th:text="${prescription.user.firstName} + ' ' + ${prescription.user.lastName}"></td>
+      <td>
+        <!--        <a th:href="@{/pharmacist/edit/{id}(id=${prescription.id})}">Edit</a>-->
+        <a th:href="@{/pharmacist/delete/{id}(id=${prescription.id})}">Delete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
   <p>
     Welcome <span sec:authentication="principal.username">Patient</span>
   </p>

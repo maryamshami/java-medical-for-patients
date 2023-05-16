@@ -3,8 +3,11 @@ package com.medical.healthcare.controller;
 import com.medical.healthcare.controller.dto.PrescriptionDto;
 import com.medical.healthcare.controller.dto.UserRegistrationDto;
 import com.medical.healthcare.model.Drug;
+import com.medical.healthcare.model.Pharmacy;
 import com.medical.healthcare.model.Prescription;
 import com.medical.healthcare.model.User;
+import com.medical.healthcare.repository.DrugRepository;
+import com.medical.healthcare.repository.PharmacyRepository;
 import com.medical.healthcare.repository.PrescriptionRepository;
 import com.medical.healthcare.repository.UserRepository;
 import com.medical.healthcare.service.DrugService;
@@ -28,6 +31,10 @@ public class DoctorController {
     @Autowired
     public PrescriptionRepository prescriptionRepository;
 
+    @Autowired
+    public PharmacyRepository pharmacyRepository;
+    @Autowired
+    public DrugRepository drugRepository;
     private final UserService userService;
     private final PrescriptionService prescriptionService;
     private final DrugService drugService;
@@ -44,19 +51,45 @@ public class DoctorController {
 
         PrescriptionDto prescriptionDto = new PrescriptionDto();
         model.addAttribute("prescriptionDto", prescriptionDto);
+
+
+
+        Drug drug = new Drug(); // Add this line to create the "drug" object
+        drug.setPharmacy(new Pharmacy());
+        model.addAttribute("drug", drug); // Add the "drug" object to the model
+
+
+        List<Prescription> prescriptionList = prescriptionService.getAllPrescriptions();
+        model.addAttribute("prescriptions", prescriptionList);
         return "doctor";
     }
 
-    //doctor/delete/user/{id}
-//    @PostMapping("/doctor/delete/user/{id}")
-//    public String deleteItem(@PathVariable("id") Long id) {
-//        // Delete the item by ID using the itemService or repository
-//        prescriptionRepository.deleteId(id);
-//        userService.deleteById(id);
-//
-//        // Redirect the user to the item list page or any other page
-//        return "doctor";
-//    }
+    @GetMapping("/doctor/drug")
+    public String showDrug(Model model) {
+        Drug drug = new Drug();
+        drug.setPharmacy(new Pharmacy());
+        model.addAttribute("drug", drug); // Add the "drug" object to the model
+
+        return "doctor";
+    }
+
+    @PostMapping("/doctor/drug")
+    public String createDrug(@ModelAttribute("drug") Drug drug, BindingResult result, Model model) {
+
+        Pharmacy pharmacy = drug.getPharmacy();
+        pharmacyRepository.save(pharmacy);
+
+        drug.setPharmacy(pharmacy);
+        drugRepository.save(drug);
+
+        // Add the updated "drug" object back to the model
+        model.addAttribute("drug", drug);
+
+        return "redirect:/doctor";
+    }
+
+
+
 
     @PostMapping("/doctor/delete/user/{id}")
     public String deleteItem(@PathVariable("id") Long id) {
@@ -75,50 +108,16 @@ public class DoctorController {
     ){
         User existingUser= userService.findByIdentificationNumber(prescriptionDto.getIdentificationNumber());
         Drug existingDrug= drugService.getDrugByName(prescriptionDto.getDrugName());
-
         if(existingUser!=null&& existingDrug!=null){
             Prescription prescription=new Prescription();
             prescription.setUser(existingUser);
             prescription.setDate(new Date());
-
             prescription.setDrug(existingDrug);
             prescriptionService.createPrescription(prescription);
-
         }
-
-        return "doctor";
-
+        return "redirect:/doctor";
     }
 
-
-
-
-
-
-
-
-//    @GetMapping("/new")
-//    public String showCreateForm(Model model) {
-//        model.addAttribute("prescription", new Prescription());
-//        model.addAttribute("drugs", drugService.getAllDrugs());
-//        model.addAttribute("users", userService.getAllUsers());
-//        return "doctor";
-//    }
-//
-//    @PostMapping("/prescriptions")
-//    public String createPrescription(@ModelAttribute Prescription prescription) {
-//        prescriptionService.savePrescription(prescription);
-//        return "redirect:/doctor/new";
-//    }
-
-
-
-//    @GetMapping()
-//    public String showUserList(Model model) {
-//        List<User> userList = userService.getAllUsers();
-//        model.addAttribute("users", userList);
-//        return "doctor";
-//    }
 
     ///create-prescription
 
@@ -149,28 +148,7 @@ public class DoctorController {
 
     }
 
-//    @PostMapping("/doctor/create-prescription")
-//    public String showUserList(Model model) {
-//        model.addAttribute("users", userRepository.findAll());
-//        return "create-prescription";
-//    }
 
-
-
-
-//    @RequestMapping("/new")
-//    public String newEmployeePage(Model model) {
-//        Employee employee = new Employee();
-//        PrescriptionDto prescriptionDto=new P
-//        model.addAttribute("employee",employee);
-//        return "new_employee";
-//    }
-//
-//    @RequestMapping(value="/save", method = RequestMethod.POST )
-//    public String saveEmployee(@ModelAttribute("employee") Employee stu) {
-//        service.save(stu);
-//        return "redirect:/";
-//    }
 
 
 }

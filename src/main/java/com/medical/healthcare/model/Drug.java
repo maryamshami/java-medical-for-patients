@@ -60,4 +60,12 @@ public class Drug {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public Pharmacy getPharmacy() {
+        return pharmacy;
+    }
+
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
+    }
 }

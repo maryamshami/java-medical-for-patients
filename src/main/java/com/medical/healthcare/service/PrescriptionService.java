@@ -1,6 +1,7 @@
 package com.medical.healthcare.service;
 
 import com.medical.healthcare.model.Prescription;
+import com.medical.healthcare.model.User;
 
 import java.util.List;
 

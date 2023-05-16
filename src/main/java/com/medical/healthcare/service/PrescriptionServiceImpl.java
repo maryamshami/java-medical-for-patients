@@ -2,6 +2,7 @@ package com.medical.healthcare.service;
 
 
 import com.medical.healthcare.model.Prescription;
+import com.medical.healthcare.model.User;
 import com.medical.healthcare.repository.PrescriptionRepository;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -42,4 +43,6 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public List<Prescription> searchPrescriptions(String query) {
         return prescriptionRepository.searchPrescriptions(query);
     }
+
+
 }
