@@ -94,11 +94,56 @@
       <td th:text="${prescription.user.firstName} + ' ' + ${prescription.user.lastName}"></td>
       <td>
         <!--        <a th:href="@{/pharmacist/edit/{id}(id=${prescription.id})}">Edit</a>-->
-        <a th:href="@{/pharmacist/delete/{id}(id=${prescription.id})}">Delete</a>
+<!--        <a th:href="@{/doctor/delete/user/{id}(id=${prescription.id})}">Delete</a>-->
+
+        <form th:action="@{/doctor/delete/prescription/delete/{id}(id=${prescription.id})}" method="post">
+          <input type="submit" value="Delete" />
+
+        </form>
       </td>
     </tr>
     </tbody>
   </table>
+
+  <br>
+  <br>
+  <br>
+  <h2>All drugs and pharmacy information</h2>
+  <table class="table">
+    <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>Drug Name</th>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>Pharmacy Name</th>
+      <th>Pharmacy Address</th>
+
+      <th>Actions</th> <!-- New column for actions -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="drug : ${drugs}">
+      <td th:text="${drug.id}"></td>
+      <td th:text="${drug.name}"></td>
+      <td th:text="${drug.quantity}"></td>
+      <td th:text="${drug.price}"></td>
+      <td th:text="${drug.pharmacy.name}"></td>
+      <td th:text="${drug.pharmacy.address}"></td>
+      <td>
+        <!-- Add links for editing and deleting -->
+<!--        <a th:href="@{/doctor/drug/edit/{id}(id=${drug.id})}">Edit</a>-->
+<!--        <a th:href="@{/doctor/drug/delete/{id}(id=${drug.id})}">Delete</a>-->
+
+        <form th:action="@{/doctor/drug/delete/{id}(id=${drug.id})}" method="post">
+          <input type="hidden" name="_method" value="delete" />
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
 
 
 
@@ -130,6 +175,8 @@
     <button type="submit" class="btn btn-primary">Create Prescription</button>
   </div>
 </form>
+
+
 
       <br>
       <br>

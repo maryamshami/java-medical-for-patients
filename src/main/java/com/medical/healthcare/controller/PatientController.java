@@ -1,10 +1,14 @@
 package com.medical.healthcare.controller;
 
+import com.medical.healthcare.model.Drug;
+import com.medical.healthcare.model.Pharmacy;
 import com.medical.healthcare.model.Prescription;
 import com.medical.healthcare.model.User;
+import com.medical.healthcare.repository.PharmacyRepository;
 import com.medical.healthcare.service.DrugService;
 import com.medical.healthcare.service.PrescriptionService;
 import com.medical.healthcare.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +23,8 @@ import java.util.List;
 @Controller
 @RequestMapping()
 public class PatientController {
+    @Autowired
+    PharmacyRepository pharmacyRepository;
 
     private final UserService userService;
     private final PrescriptionService prescriptionService;
@@ -45,6 +51,13 @@ public class PatientController {
 
         User user=userService.findByIdentificationNumber(authentication.getName());
         model.addAttribute("user",user);
+
+
+        List<Drug> drugList = drugService.getAllDrugs();
+        model.addAttribute("drugs", drugList);
+
+        List<Pharmacy> pharmacyList = pharmacyRepository.findAll();
+        model.addAttribute("pharmacies", pharmacyList);
         return "patient";
     }
 

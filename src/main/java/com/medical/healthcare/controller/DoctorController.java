@@ -1,7 +1,6 @@
 package com.medical.healthcare.controller;
 
 import com.medical.healthcare.controller.dto.PrescriptionDto;
-import com.medical.healthcare.controller.dto.UserRegistrationDto;
 import com.medical.healthcare.model.Drug;
 import com.medical.healthcare.model.Pharmacy;
 import com.medical.healthcare.model.Prescription;
@@ -9,8 +8,8 @@ import com.medical.healthcare.model.User;
 import com.medical.healthcare.repository.DrugRepository;
 import com.medical.healthcare.repository.PharmacyRepository;
 import com.medical.healthcare.repository.PrescriptionRepository;
-import com.medical.healthcare.repository.UserRepository;
 import com.medical.healthcare.service.DrugService;
+import com.medical.healthcare.service.DrugServiceImpl;
 import com.medical.healthcare.service.PrescriptionService;
 import com.medical.healthcare.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 //@RequestMapping("/doctor")
@@ -58,9 +55,16 @@ public class DoctorController {
         drug.setPharmacy(new Pharmacy());
         model.addAttribute("drug", drug); // Add the "drug" object to the model
 
+        List<Drug> drugList = drugService.getAllDrugs();
+        model.addAttribute("drugs", drugList);
+
+        List<Pharmacy> pharmacyList = pharmacyRepository.findAll();
+        model.addAttribute("pharmacies", pharmacyList);
 
         List<Prescription> prescriptionList = prescriptionService.getAllPrescriptions();
         model.addAttribute("prescriptions", prescriptionList);
+
+
         return "doctor";
     }
 
@@ -69,6 +73,12 @@ public class DoctorController {
         Drug drug = new Drug();
         drug.setPharmacy(new Pharmacy());
         model.addAttribute("drug", drug); // Add the "drug" object to the model
+
+        List<Drug> drugList = drugService.getAllDrugs();
+        model.addAttribute("drugs", drugList);
+
+        List<Pharmacy> pharmacyList = pharmacyRepository.findAll();
+        model.addAttribute("pharmacies", pharmacyList);
 
         return "doctor";
     }
@@ -102,6 +112,40 @@ public class DoctorController {
         // Redirect the user to the item list page or any other page
         return "redirect:/doctor";
     }
+    @PostMapping("/doctor/drug/delete/{id}")
+    public String deleteDrug(@PathVariable("id") Long id) {
+
+        Drug drug=drugService.getDrugById(id);
+        drugRepository.deleteById(id);
+        pharmacyRepository.deleteById(drug.getPharmacy().getId());
+
+        return "redirect:/doctor";
+    }
+
+
+    @GetMapping("/doctor/drug/delete/")
+    public String deleteDrug(Model model){
+        Drug drug = new Drug(); // Add this line to create the "drug" object
+        drug.setPharmacy(new Pharmacy());
+        model.addAttribute("drug", drug); // Add the "drug" object to the model
+
+        List<Drug> drugList = drugService.getAllDrugs();
+        model.addAttribute("drugs", drugList);
+
+        List<Pharmacy> pharmacyList = pharmacyRepository.findAll();
+        model.addAttribute("pharmacies", pharmacyList);
+        return "doctor";
+    }
+
+  //  /doctor/drug/delete/{id}
+
+    @PostMapping("/doctor/delete/prescription/delete/{id}")
+    public String deletePrescription(@PathVariable("id") Long id) {
+//        prescriptionRepository.deleteByUserId(id);
+        prescriptionService.deletePrescription(id);
+        return "redirect:/doctor"; // Redirect to the pharmacist page after deletion
+    }
+
     @PostMapping("/doctor")
     public String createPrescriptionNew( @ModelAttribute("prescriptionDto")PrescriptionDto prescriptionDto,
                                       BindingResult result

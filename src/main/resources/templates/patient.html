@@ -84,11 +84,44 @@
       <td th:text="${prescription.user.firstName} + ' ' + ${prescription.user.lastName}"></td>
       <td>
         <!--        <a th:href="@{/pharmacist/edit/{id}(id=${prescription.id})}">Edit</a>-->
-        <a th:href="@{/pharmacist/delete/{id}(id=${prescription.id})}">Delete</a>
+<!--        <a th:href="@{/pharmacist/delete/{id}(id=${prescription.id})}">Delete</a>-->
       </td>
     </tr>
     </tbody>
   </table>
+  <br>
+  <br>
+  <br>
+
+<h4>please look at prescription and look at your drug and contact with pharmacy with phone and drug will be delivered</h4>
+ <br>
+  <br>
+  <h4>all drugs with pharmacies and phones</h4>
+  <table class="table">
+    <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>Drug Name</th>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>Pharmacy Name</th>
+      <th>Pharmacy Address</th>
+      <th>pharmacy phone</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="drug : ${drugs}">
+      <td th:text="${drug.id}"></td>
+      <td th:text="${drug.name}"></td>
+      <td th:text="${drug.quantity}"></td>
+      <td th:text="${drug.price}"></td>
+      <td th:text="${drug.pharmacy.name}"></td>
+      <td th:text="${drug.pharmacy.address}"></td>
+      <td th:text="${drug.pharmacy.phone}"></td>
+    </tr>
+    </tbody>
+  </table>
+
 
   <p>
     Welcome <span sec:authentication="principal.username">Patient</span>
