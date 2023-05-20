@@ -14,7 +14,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
@@ -52,6 +55,8 @@ public class PatientController {
         User user=userService.findByIdentificationNumber(authentication.getName());
         model.addAttribute("user",user);
 
+        Drug drug =new Drug();
+        model.addAttribute("drug",drug);
 
         List<Drug> drugList = drugService.getAllDrugs();
         model.addAttribute("drugs", drugList);
@@ -60,6 +65,7 @@ public class PatientController {
         model.addAttribute("pharmacies", pharmacyList);
         return "patient";
     }
+
 
 
 }

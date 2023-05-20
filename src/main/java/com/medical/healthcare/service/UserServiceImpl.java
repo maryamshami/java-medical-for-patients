@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-            public User save(UserRegistrationDto registration) {
+    public User save(UserRegistrationDto registration) {
                 User user = new User();
                 user.setFirstName(registration.getFirstName());
                 user.setLastName(registration.getLastName());

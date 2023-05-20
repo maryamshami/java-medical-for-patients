@@ -66,8 +66,6 @@ public class PharmacistController {
         return "redirect:/pharmacist";
     }
 
-
-
     @GetMapping("/pharmacist")
     public String pharmacist(Model model) {
         List<User> userList = userService.getAllUsers();
@@ -84,8 +82,6 @@ public class PharmacistController {
 
         List<Pharmacy> pharmacyList = pharmacyRepository.findAll();
         model.addAttribute("pharmacies", pharmacyList);
-
-
 
         return "pharmacist";
     }

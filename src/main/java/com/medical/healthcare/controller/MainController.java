@@ -19,22 +19,4 @@ public class MainController {
         return "login";
     }
 
-//    @GetMapping("/user")
-//    public String userIndex(){
-//        return "user/index";
-//    }
-
-//    @GetMapping("/patient")
-//    public String patient(){
-//        return "patient";
-//    }
-
-//    @GetMapping("/doctor")
-//    public String doctor(){
-//        return "doctor";
-//    }
-
-
-
-
 }

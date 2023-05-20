@@ -137,7 +137,6 @@ public class DoctorController {
         return "doctor";
     }
 
-  //  /doctor/drug/delete/{id}
 
     @PostMapping("/doctor/delete/prescription/delete/{id}")
     public String deletePrescription(@PathVariable("id") Long id) {
@@ -161,6 +160,8 @@ public class DoctorController {
         }
         return "redirect:/doctor";
     }
+
+    //update prescription
 
 
     ///create-prescription
